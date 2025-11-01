@@ -312,6 +312,14 @@ Headers: Authorization: Bearer <token>
 - Vite
 - CSS3
 
+## 📸 Screenshots
+
+### Homepage
+![Homepage with Blog Posts](screenshots/homepage.jpg)
+
+### Create Post Form
+![Create Post Form](screenshots/post-form.jpg)
+
 ## 📝 Project Status
 
 ✅ **Completed**
