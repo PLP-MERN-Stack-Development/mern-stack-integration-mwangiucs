@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import './PostCard.css';
 
 const PostCard = ({ post }) => {
+  const [imageError, setImageError] = useState(false);
+
   const truncateContent = (text, maxLength = 150) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
@@ -15,14 +18,27 @@ const PostCard = ({ post }) => {
     });
   };
 
+  const getImageUrl = (imageName) => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const baseUrl = apiUrl.replace('/api', '');
+    return `${baseUrl}/uploads/${imageName}`;
+  };
+
   return (
     <div className="post-card">
-      {post.featuredImage && (
+      {post.featuredImage && !imageError && (
         <div className="post-card-image">
           <img
-            src={`http://localhost:5000/uploads/${post.featuredImage}`}
+            src={getImageUrl(post.featuredImage)}
             alt={post.title}
+            onError={() => setImageError(true)}
+            onLoad={() => setImageError(false)}
           />
+        </div>
+      )}
+      {imageError && post.featuredImage && (
+        <div className="post-card-image post-card-image-placeholder">
+          <span>Image not available</span>
         </div>
       )}
       <div className="post-card-content">

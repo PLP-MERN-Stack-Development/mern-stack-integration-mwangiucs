@@ -85,16 +85,31 @@ const PostDetail = () => {
 
   const isAuthor = user && (user.id === post.author?._id || user.role === 'admin');
 
+  const [imageError, setImageError] = useState(false);
+
+  const getImageUrl = (imageName) => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const baseUrl = apiUrl.replace('/api', '');
+    return `${baseUrl}/uploads/${imageName}`;
+  };
+
   return (
     <div className="post-detail">
       <div className="container">
         <div className="post-detail-content">
-          {post.featuredImage && (
+          {post.featuredImage && !imageError && (
             <div className="post-detail-image">
               <img
-                src={`http://localhost:5000/uploads/${post.featuredImage}`}
+                src={getImageUrl(post.featuredImage)}
                 alt={post.title}
+                onError={() => setImageError(true)}
+                onLoad={() => setImageError(false)}
               />
+            </div>
+          )}
+          {imageError && post.featuredImage && (
+            <div className="post-detail-image post-detail-image-placeholder">
+              <span>Image not available</span>
             </div>
           )}
 

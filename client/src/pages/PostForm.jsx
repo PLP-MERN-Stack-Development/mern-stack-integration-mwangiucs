@@ -65,7 +65,9 @@ const PostForm = () => {
       });
 
       if (post.featuredImage) {
-        setImagePreview(`http://localhost:5000/uploads/${post.featuredImage}`);
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+        const baseUrl = apiUrl.replace('/api', '');
+        setImagePreview(`${baseUrl}/uploads/${post.featuredImage}`);
       }
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to fetch post');
